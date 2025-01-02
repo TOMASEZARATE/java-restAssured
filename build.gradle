@@ -1,0 +1,44 @@
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+def allureVersion = "2.20.1"
+// Define the version of AspectJ
+def aspectJVersion = "1.9.20.1"
+// Define configuration for AspectJ agent
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
+ 
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+   testImplementation 'io.rest-assured:rest-assured:5.5.0'
+   testImplementation 'io.rest-assured:json-path:5.5.0'
+   testImplementation 'io.rest-assured:xml-path:5.5.0'
+   testImplementation 'io.rest-assured:json-schema-validator:5.5.0'
+   testImplementation 'org.testng:testng:7.10.2'
+   // Import allure-bom to ensure correct versions of all the dependencies are used
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    // Add necessary Allure dependencies to dependencies section
+    testImplementation "io.qameta.allure:allure-testng"
+    // Add aspectjweaver dependency
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+}
+
+tasks.named('test') {
+    useTestNG() {
+        // Usa el archivo testng.xml
+        suites 'testNG.xml'
+    }
+
+    jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
+}

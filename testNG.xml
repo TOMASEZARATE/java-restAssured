@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Automation api">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+    <test name="Test API Reqres">
+        <classes>
+            <class name="APITest.login"/> <!-- Se ejecutará primero -->
+            <class name="APITest.listUsers"/> <!-- Se ejecutará después del login -->
+        </classes>
+    </test>
+</suite>
